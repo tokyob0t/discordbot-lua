@@ -1,0 +1,13 @@
+{
+  "diagnostics": {
+    "libraryFiles": "Opened"
+  },
+  "workspace": {
+    "library": ["/usr/share/lua/5.1/"],
+    "maxPreload": 2000,
+    "preloadFileSize": 1000
+  },
+  "runtime": {
+    "version": "Lua 5.1"
+  }
+}
