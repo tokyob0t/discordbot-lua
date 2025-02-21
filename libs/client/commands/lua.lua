@@ -1,3 +1,5 @@
+local Command = require('utils/command')
+
 local code = function(s)
     return string.format('```\n%s```', s)
 end
@@ -11,13 +13,9 @@ local print_line = function(...)
     return table.concat(ret, '\t')
 end
 
-return {
-    name = 'lua',
-    description = 'run a string as lua code',
-    options = {
-        { name = 'code', description = 'code', required = true },
-    },
-    callback = function(interaction, args)
+return Command('lua', 'run a string as lua code')
+    :addStrOption('code', 'code', true)
+    :setCallback(function(interaction, args)
         local lines = {}
         local sandbox = setmetatable(
             { os = {}, io = {}, require = function() end },
@@ -47,5 +45,4 @@ return {
         end
 
         return interaction:reply(code(str_lines))
-    end,
-}
+    end)

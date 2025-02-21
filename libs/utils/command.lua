@@ -113,7 +113,7 @@ function Command:addAttachmentOption(name, description, required, choices)
     return self:addOption(name, description, 'attachment', required, choices)
 end
 
----@param callback fun(interaction: Interaction, args?: table)
+---@param callback fun(interaction: Interaction, args?: table): any
 function Command:setCallback(callback)
     self.callback = callback
     return self

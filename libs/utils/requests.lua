@@ -39,7 +39,7 @@ end
 local R = {}
 
 ---@param tbl string | { url: string, params?: table<string, any>, headers?: table<string, string>}
----@param callback fun(res: Response)
+---@param callback fun(res: Response): any
 R.get = async(function(tbl, callback)
     if type(tbl) == 'string' then
         tbl = { url = tbl, headers = {}, params = {} }
