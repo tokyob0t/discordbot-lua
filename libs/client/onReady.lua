@@ -1,14 +1,14 @@
-local slash_commands = table.unpack(require('client/commands'))
+local commands = require('client/commands')
 
 return function(client)
-    client:info('Logged in as ' .. client.user.name)
+    client:info(string.format('Logged in as %s', client.user.name))
 
     for key in pairs(client:getGlobalApplicationCommands()) do
         client:deleteGlobalApplicationCommand(key)
     end
 
-    for _, value in pairs(slash_commands) do
-        client:createGlobalApplicationCommand(value)
+    for _, tbl in pairs(commands) do
+        client:createGlobalApplicationCommand(tbl[2])
     end
 
     local count = #client:getGlobalApplicationCommands()

@@ -19,7 +19,10 @@ return {
     },
     callback = function(interaction, args)
         local lines = {}
-        local sandbox = setmetatable({ os = {} }, { __index = _G })
+        local sandbox = setmetatable(
+            { os = {}, io = {}, require = function() end },
+            { __index = _G }
+        )
 
         sandbox.print = function(...)
             table.insert(lines, print_line(...))

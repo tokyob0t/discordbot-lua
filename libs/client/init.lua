@@ -1,6 +1,11 @@
 local discordia = require('discordia')
 local tools = require('discordia-slash').util.tools()
-local client = discordia.Client():useApplicationCommands()
+local CLIENT = discordia.Client({
+    dateTime = '| %T ',
+})
+
+CLIENT:useApplicationCommands()
+
 require('utils/globals')
 
 local onReady = require('client/onReady')
@@ -8,16 +13,16 @@ local onSlashCommand = require('client/onSlashCommand')
 
 local onMessageCreate = function(message) end
 
-client:on('ready', function()
-    return onReady(client)
+CLIENT:on('ready', function()
+    return onReady(CLIENT)
 end)
 
-client:on('slashCommand', function(...)
+CLIENT:on('slashCommand', function(...)
     return onSlashCommand(...)
 end)
 
-client:on('messageCreate', function(...)
+CLIENT:on('messageCreate', function(...)
     return onMessageCreate(...)
 end)
 
-return client
+return CLIENT

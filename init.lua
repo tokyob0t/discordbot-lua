@@ -1,7 +1,7 @@
 local ENV = require('utils/dotenv')
 
 if not ENV.TOKEN then
-    return os.exit(0)
+    error('TOKEN not found')
 end
 
 local client = require('client')
