@@ -1,3 +1,4 @@
 /deps/
 /gateway.json
 /discordia.log
+/.env
