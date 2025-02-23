@@ -1,13 +1,15 @@
-local commands = require('client/commands')
+local commands = require('client/slashCommands')
 
+---@param interaction Interaction
 return function(interaction, command, args)
-    local tbl = table.find(commands, function(tbl)
-        return tbl[1] == command.name
-    end)
+    local tbl = table.find(
+        commands,
+        function(tbl) return tbl[1] == command.name end
+    )
 
     if tbl then
-        tbl.callback(interaction, args)
-    else
-        interaction:reply('Unknown Command!')
+        return tbl.callback(interaction, args)
     end
+
+    interaction:reply('Unknown Command!', true)
 end

@@ -1,6 +1,6 @@
-local Command = require('utils/command')
+local SlashCommand = require('utils/command')
 
-local exampleCommand = Command('example', 'example description')
+local exampleCommand = SlashCommand('example', 'example description')
 
 return exampleCommand
     :addStrOption('animal', 'choose one', false, { 'dog', 'cat' })

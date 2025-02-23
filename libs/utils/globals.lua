@@ -27,9 +27,7 @@ end
 ---@param fn? fun(value: T, i:integer): boolean
 ---@return T?, number?
 table.find = function(tbl, fn)
-    fn = fn or function(value)
-        return value
-    end
+    fn = fn or function(value) return value end
 
     for index, value in ipairs(tbl) do
         if fn(value, index) then
@@ -43,6 +41,4 @@ end
 ---@param s string
 ---@param subs string
 ---@return boolean
-string.has = function(s, subs)
-    return string.find(s, subs, 1, true) ~= nil
-end
+string.has = function(s, subs) return string.find(s, subs, 1, true) ~= nil end

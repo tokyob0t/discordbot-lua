@@ -1,4 +1,4 @@
-local commands = require('client/commands')
+local commands = require('client/slashCommands')
 
 return function(client)
     client:info(string.format('Logged in as %s', client.user.name))

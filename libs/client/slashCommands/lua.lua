@@ -1,10 +1,8 @@
-local Command = require('utils/command')
+local SlashCommand = require('utils/command')
 
-local code = function(s)
-    return string.format('```\n%s```', s)
-end
+local code = function(s) return string.format('```\n%s```', s) end
 
-local print_line = function(...)
+local printLine = function(...)
     local ret = {}
     for i = 1, select('#', ...) do
         local args = tostring(select(i, ...))
@@ -13,18 +11,15 @@ local print_line = function(...)
     return table.concat(ret, '\t')
 end
 
-return Command('lua', 'run a string as lua code')
+return SlashCommand('lua', 'run a string as lua code')
     :addStrOption('code', 'code', true)
     :setCallback(function(interaction, args)
         local lines = {}
-        local sandbox = setmetatable(
-            { os = {}, io = {}, require = function() end },
-            { __index = _G }
-        )
+        local sandbox = setmetatable({}, { __index = _G })
 
-        sandbox.print = function(...)
-            table.insert(lines, print_line(...))
-        end
+        sandbox.os, sandbox.io, sandbox.require = {}, {}, function() end
+
+        sandbox.print = function(...) table.insert(lines, printLine(...)) end
 
         local fn, sintax_error = load(args.code, 'DiscordBot', 't', sandbox)
 

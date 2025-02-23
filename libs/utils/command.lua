@@ -1,17 +1,24 @@
----@alias Option { name: string, description: string, type: "number" | "string" | "boolean" ,required: boolean, choices?: table<string, string> }
+---@alias optionType "string"|"integer"|"boolean"|"user"|"channel"|"role"|"mentionable"|"number"|"attachment"
 
----@class Command
+---@class Option
 ---@field name string
 ---@field description string
----@field callback function
+---@field type optionType
+---@field required boolean
+---@field choices table<string, string>
+
+---@class SlashCommand
+---@field name string
+---@field description string
 ---@field options Option[]
----@overload fun(name: string, description: string): Command
-local Command = {}
+---@field callback function
+---@overload fun(name: string, description: string): SlashCommand
+local SlashCommand = {}
 
 ---@param name string
 ---@param description string
-Command.new = function(name, description)
-    local new = setmetatable({}, { __index = Command })
+SlashCommand.new = function(name, description)
+    local new = setmetatable({}, { __index = SlashCommand })
 
     new.name = name
     new.description = description
@@ -21,13 +28,22 @@ Command.new = function(name, description)
 end
 
 ---@param name string
----@param description string
+---@param description? string
 ---@param required boolean?
----@param type "string"|"integer"|"boolean"|"user"|"channel"|"role"|"mentionable"|"number"|"attachment"
+---@param type optionType
 ---@param choices? table<string, string> | string[]
-function Command:addOption(name, description, type, required, choices)
+function SlashCommand:addOption(name, description, type, required, choices)
     if _G.type(required) == 'nil' then
         required = false
+    end
+
+    description = description or name
+    choices = choices or {}
+
+    for key, value in pairs(choices) do
+        if _G.type(key) == 'number' then
+            choices[value], choices[key] = value, nil
+        end
     end
 
     table.insert(self.options, {
@@ -42,86 +58,96 @@ function Command:addOption(name, description, type, required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addStrOption(name, description, required, choices)
+function SlashCommand:addStrOption(name, description, required, choices)
     return self:addOption(name, description, 'string', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addIntOption(name, description, required, choices)
+function SlashCommand:addIntOption(name, description, required, choices)
     return self:addOption(name, description, 'integer', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addBoolOption(name, description, required, choices)
+function SlashCommand:addBoolOption(name, description, required, choices)
     return self:addOption(name, description, 'boolean', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addUserOption(name, description, required, choices)
+function SlashCommand:addUserOption(name, description, required, choices)
     return self:addOption(name, description, 'user', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addChannelOption(name, description, required, choices)
+function SlashCommand:addChannelOption(name, description, required, choices)
     return self:addOption(name, description, 'channel', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addRoleOption(name, description, required, choices)
+function SlashCommand:addRoleOption(name, description, required, choices)
     return self:addOption(name, description, 'role', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addMentionableOption(name, description, required, choices)
+function SlashCommand:addMentionableOption(
+    name,
+    description,
+    required,
+    choices
+)
     return self:addOption(name, description, 'mentionable', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addNumOption(name, description, required, choices)
+function SlashCommand:addNumOption(name, description, required, choices)
     return self:addOption(name, description, 'number', required, choices)
 end
 
 ---@param name string
----@param description string
----@param required boolean?
+---@param description? string
+---@param required? boolean
 ---@param choices? table<string, string> | string[]
-function Command:addAttachmentOption(name, description, required, choices)
+function SlashCommand:addAttachmentOption(
+    name,
+    description,
+    required,
+    choices
+)
     return self:addOption(name, description, 'attachment', required, choices)
 end
 
 ---@param callback fun(interaction: Interaction, args?: table): any
-function Command:setCallback(callback)
+function SlashCommand:setCallback(callback)
     self.callback = callback
     return self
 end
 
 return setmetatable({}, {
-    __index = Command,
+    __index = SlashCommand,
     __call = function(_, name, description)
-        return Command.new(name, description)
+        return SlashCommand.new(name, description)
     end,
 })

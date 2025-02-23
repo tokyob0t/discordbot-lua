@@ -22,9 +22,7 @@ Response.new = function(tbl, body)
     return res
 end
 
-Response.json = function(self)
-    return json.parse(self.text)
-end
+Response.json = function(self) return json.parse(self.text) end
 
 Response.toString = function(self)
     return json.encode({
