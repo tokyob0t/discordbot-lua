@@ -1,12 +1,11 @@
-local discordia = require('discordia')
-local tools = require('discordia-slash').util.tools()
-local CLIENT = discordia.Client({
+require('utils/globals')
+require('discordia-slash').util.tools() -- if i remove this line, the bot wont use commands; wtf???
+
+local CLIENT = require('discordia').Client({
     dateTime = '| %T ',
 })
 
 CLIENT:useApplicationCommands()
-
-require('utils/globals')
 
 local onReady = require('client/onReady')
 local onSlashCommand = require('client/onSlashCommand')

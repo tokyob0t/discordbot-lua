@@ -67,6 +67,12 @@ return muteCommand:setCallback(function(interaction, args)
         end
     end
 
+    if time == 0 then
+        return interaction:reply(
+            'Bad format, Usage: `/mute (user) (duration) (reason?)`'
+        )
+    end
+
     interaction:reply({
         embed = {
             color = 0xffffff,
